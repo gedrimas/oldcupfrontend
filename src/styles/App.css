@@ -1,0 +1,63 @@
+div {
+  box-sizing: border-box;
+}
+
+/* img {
+  width: 100%;
+  height: auto;
+} */
+
+.App-wrapper {
+  background: yellow;
+  border: 1px solid red;
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.LangLoginBar-wrapper {
+  background: aqua;
+  border: 1px solid red;
+  padding: 1rem;
+  height: 10vh;
+}
+
+.InfoContact-wrapper {
+  background: pink;
+  border: 1px solid red;
+  padding: 1rem;
+  height: 20vh;
+}
+
+.SectionMenu-wrapper {
+  background: gold;
+  border: 1px solid red;
+  padding: 1rem;
+  height: 10vh;
+}
+
+.AdvertBlock-wrapper {
+  background: lime;
+  border: 1px solid red;
+  padding: 1rem;
+  min-height: 55vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Advert-column {
+  background: yellow;
+  border: 1px solid red;
+  flex: 100%;
+}
+
+@media screen and (min-width: 800px) {
+  .Advert-column {
+    flex: 50%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .Advert-column {
+    flex: 25%;
+  }
+}
