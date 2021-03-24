@@ -1,57 +1,52 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import ResponsesTypes, { Sections, Contacts } from './responsesTypes';
 import { Methods, Urls } from './paramsTypes';
 
-export default class Api {
-  public response: Promise<AxiosResponse<Sections | Contacts> | Error>;
+type Response<U extends 'allsections' | 'contacts'> = Pick<
+  ResponsesTypes<Sections | Contacts>,
+  U
+>;
+
+export interface AxiosResponse<U extends Urls> {
+  data: Response<U>;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: AxiosRequestConfig;
+}
+
+export default class Api<U extends Urls> {
+  public response: Error | Promise<AxiosResponse<U>>;
 
   constructor(
     public method: Methods,
     public url: Urls,
-    public payload: any,
-    public options: any
+    public payload?: any,
+    public options?: any
   ) {
     this.response = this.sentRequest();
   }
 
   private sentRequest() {
-    return (async (url: Urls) => {
+    return ((url: Urls) => {
       switch (this.method) {
         case 'get': {
-          try {
-            const response = await axios[this.method]<
-              ResponsesTypes[typeof url]
-            >(this.url);
-            return response;
-          } catch (err) {
-            return new Error(err);
-          }
+          const response = axios[this.method]<Response<U>>(
+            `http://localhost:3001/${this.url}`
+          );
+          return response;
         }
         case 'post': {
-          try {
-            const response = await axios[this.method]<
-              ResponsesTypes[typeof url]
-            >(this.url, this.payload, this.options);
-            return response;
-          } catch (err) {
-            return new Error(err);
-          }
+          const response = axios[this.method]<Response<U>>(
+            this.url,
+            this.payload,
+            this.options
+          );
+          return response;
         }
         default:
           return new Error();
       }
     })(this.url);
-
-    // switch (this.method) {
-    //   case 'get': {
-    //     //return axios[this.method]<ResponsesTypes[typeof url]>(this.url);
-    //       const resp = axios[this.method]<ResponsesTypes[typeof url]>(this.url)
-    //       return resp
-    //   }
-    //   case 'post': {
-    //     const resp = axios[this.method](this.url, this.payload, this.options);
-    //     return resp
-    //   }
-    // }
   }
 }

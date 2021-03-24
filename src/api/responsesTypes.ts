@@ -5,7 +5,9 @@ interface Section {
   ee: string;
   __v: number;
 }
-export type Sections = Section[];
+export interface Sections {
+  allsections: Section[];
+}
 
 interface Contact {
   _id: string;
@@ -15,9 +17,15 @@ interface Contact {
   phone: string;
   __v: number;
 }
-export type Contacts = [Contact];
-
-export default interface ResponsesTypes {
-  allsections: Sections;
-  contacts: Contacts;
+export interface Contacts {
+  contacts: [Contact];
 }
+
+export default interface ResponsesTypes<T extends Sections | Contacts> {
+  allsections: T;
+  contacts: T;
+}
+
+//type test<T extends 'allsections' | 'contacts'> = Pick<ResponsesTypes, T>;
+
+//type all = test<'allsections'>;
