@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import '../../styles/App.css';
-import Api from '../../api/api';
-import ResponsesTypes from '../../api/responsesTypes';
+import { fetchSections } from '../../reduxAppStore/reducers/sectionSlice';
 
 const SectionMenu = () => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const allsectionsUrl = 'allsections';
-    const response = new Api<typeof allsectionsUrl>('get', allsectionsUrl)
-      .response;
-    if (!(response instanceof Error)) {
-      response.then((response) => {
-        const data = response.data.allsections;
-      });
-    }
+    dispatch(fetchSections());
   });
 
   return <div className="SectionMenu-wrapper">SectionMenu</div>;

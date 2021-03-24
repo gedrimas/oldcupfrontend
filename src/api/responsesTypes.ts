@@ -21,10 +21,12 @@ export interface Contacts {
   contacts: [Contact];
 }
 
-export default interface ResponsesTypes<T extends Sections | Contacts> {
-  allsections: T;
-  contacts: T;
-}
+// export default interface ResponsesTypes<T extends Sections | Contacts> {
+//   allsections: T;
+//   contacts: T;
+// }
+
+export type ResponsesTypes = Contacts | Sections;
 
 //type test<T extends 'allsections' | 'contacts'> = Pick<ResponsesTypes, T>;
 

@@ -1,22 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../store';
+import { Sections } from '../../api/responsesTypes';
+import Api from '../../api/api';
 
-interface Section {
-  id: string;
-  ee: string;
-  ru: string;
+interface SlicseSrctions extends Sections {
+  pending: boolean;
 }
 
-type AllSections = Section[];
-
-const initialState: AllSections = [];
+const initialState: SlicseSrctions = {
+  allsections: [],
+  pending: false,
+};
 const sectionSlice = createSlice({
   name: 'sectionSlice',
   initialState,
   reducers: {
     //create new section
-    setSection(state, action: PayloadAction<AllSections>) {
-      state = action.payload;
+    setSections(state, action: PayloadAction<Sections['allsections']>) {
+      state.allsections = action.payload;
+    },
+    setPending(state, action: PayloadAction<boolean>) {
+      state.pending = action.payload;
     },
     //find section by id and rewrite it
     // editSection(state, action: PayloadAction<Section>) {
@@ -31,5 +35,27 @@ const sectionSlice = createSlice({
     // }
   },
 });
-
+export const { setSections, setPending } = sectionSlice.actions;
 export default sectionSlice.reducer;
+
+export const fetchSections = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch(setPending(true));
+
+    const {
+      data: { allsections: sections },
+    } = await new Api<Sections>('get', 'allsections').response;
+
+    dispatch(setSections(sections));
+    dispatch(setPending(false));
+  } catch (error) {
+    dispatch(setPending(false));
+
+    const {
+      response: {
+        data: { error: errMesage },
+      },
+    } = error;
+    console.log('err', errMesage);
+  }
+};
