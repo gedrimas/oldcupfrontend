@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../store';
 import { Sections } from '../../api/responsesTypes';
 import Api from '../../api/api';
+import parseApiError from '../../api/apiError';
+import { setError, SliceError } from './errorSlice';
 
 interface SlicseSrctions extends Sections {
   pending: boolean;
@@ -50,12 +52,17 @@ export const fetchSections = (): AppThunk => async (dispatch) => {
     dispatch(setPending(false));
   } catch (error) {
     dispatch(setPending(false));
+    const errorInfo = parseApiError(error);
+    dispatch(setError(errorInfo));
+    console.log('errorInfo', errorInfo);
 
-    const {
-      response: {
-        data: { error: errMesage },
-      },
-    } = error;
-    console.log('err', errMesage);
+    // console.log('ERRTTYPE', typeof error);
+
+    // const {
+    //   response: {
+    //     data: { error: errMesage },
+    //   },
+    // } = error;
+    // console.log('err', { error });
   }
 };

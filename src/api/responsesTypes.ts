@@ -18,7 +18,7 @@ interface Contact {
   __v: number;
 }
 export interface Contacts {
-  contacts: [Contact];
+  contacts: Contact[];
 }
 
 // export default interface ResponsesTypes<T extends Sections | Contacts> {
