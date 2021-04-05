@@ -6,6 +6,7 @@ export interface SliceError {
     endpoint: string | null;
     method: string | null;
   };
+  isError: boolean;
 }
 
 const initialState: SliceError = {
@@ -14,23 +15,30 @@ const initialState: SliceError = {
     endpoint: null,
     method: null,
   },
+  isError: false,
 };
+
+/******************************************************************************
+ *                      Redux store: error
+ ******************************************************************************/
+
 const errorSlice = createSlice({
   name: 'errorSlice',
   initialState,
   reducers: {
     //set Error info
     setError(state, action: PayloadAction<SliceError['errorInfo']>) {
-      console.log('setError', action.payload);
-
       state.errorInfo = action.payload;
+      state.isError = true;
     },
+    //drop Error
     clearError(state) {
       state.errorInfo = {
         message: null,
         endpoint: null,
         method: null,
       };
+      state.isError = false;
     },
   },
 });

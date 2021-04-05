@@ -1,5 +1,3 @@
-import { Dispatch } from '@reduxjs/toolkit';
-import { SetError, SliceError } from '../reduxAppStore/reducers/errorSlice';
 import { Methods } from './paramsTypes';
 
 interface Config {
@@ -22,11 +20,14 @@ interface NetworkError {
   message: string;
 }
 
+//Define type of Error
 function apiErrorType(error: ServerError | NetworkError): error is ServerError {
   return error.response !== undefined;
 }
 
+//Parse Error for storing info about it in Redux store
 export default function parseApiError(error: any) {
+  //if ServerError
   if (apiErrorType(error)) {
     const { config, response } = error;
     return {
@@ -35,6 +36,7 @@ export default function parseApiError(error: any) {
       method: config.method,
     };
   }
+  //if NetworkError
   const { config, message } = error;
   return {
     message: message,

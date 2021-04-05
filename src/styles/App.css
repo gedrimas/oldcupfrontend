@@ -10,35 +10,44 @@ div {
 .App-wrapper {
   background: yellow;
   border: 1px solid red;
-  padding: 1rem;
+  padding: 0 1rem;
   min-height: 100vh;
-}
-
-.LangLoginBar-wrapper {
-  background: aqua;
-  border: 1px solid red;
-  padding: 1rem;
-  height: 10vh;
+  position: relative;
 }
 
 .InfoContact-wrapper {
   background: pink;
   border: 1px solid red;
-  padding: 1rem;
-  height: 20vh;
+  padding: 0 1rem;
+  height: 6rem;
+
+  position: fixed;
+  z-index: 10;
+  left: 1rem;
+  right: 1rem;
+}
+
+.InfoContact-wrapper > div {
+  padding-top: 0.7rem;
 }
 
 .SectionMenu-wrapper {
   background: gold;
   border: 1px solid red;
   padding: 1rem;
-  height: 10vh;
+  height: 3rem;
+
+  position: fixed;
+  top: 6rem;
+  z-index: 10;
+  left: 1rem;
+  right: 1rem;
 }
 
 .AdvertBlock-wrapper {
-  background: lime;
   border: 1px solid red;
-  padding: 1rem;
+  margin-top: 9rem;
+
   min-height: 55vh;
   display: flex;
   flex-wrap: wrap;
@@ -48,6 +57,39 @@ div {
   background: yellow;
   border: 1px solid red;
   flex: 100%;
+}
+
+#langIcon:hover {
+  cursor: pointer;
+}
+
+#langIcon img {
+  height: 30px;
+}
+
+@media screen and (max-width: 414px) {
+  #langIcon {
+    position: relative;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+
+  #loginIcon {
+    position: relative;
+    bottom: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .InfoContact-wrapper,
+  .SectionMenu-wrapper {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .App-wrapper {
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: 800px) {

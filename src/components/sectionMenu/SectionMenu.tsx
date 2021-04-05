@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import '../../styles/App.css';
 import { fetchSections } from '../../reduxAppStore/reducers/sectionSlice';
 
-const SectionMenu = () => {
+const SectionMenu: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {

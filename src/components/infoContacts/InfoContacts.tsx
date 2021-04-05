@@ -1,16 +1,70 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import PhoneIcon from '@material-ui/icons/Phone';
+import EmailIcon from '@material-ui/icons/Email';
 import { fetchContacts } from '../../reduxAppStore/reducers/contactsSlice';
+import { RootState } from '../../reduxAppStore/rootReducer';
 import '../../styles/App.css';
+import Login from '../sharedComponents/Login';
+import LangSwicher from '../sharedComponents/LangSwicher';
 
-const InfoContacts = () => {
+const InfoContacts: React.FC = () => {
   const dispatch = useDispatch();
 
+  //fetch data for InfoContacts component
   useEffect(() => {
     dispatch(fetchContacts());
-  });
-  return <div className="InfoContact-wrapper">InfoContact</div>;
+  }, [dispatch]);
+
+  //get contacts from Redux store
+  const contacts = useSelector((state: RootState) => state.contacts.contacts);
+
+  //get current language from Redux store
+  const currentLanguage = useSelector(
+    (state: RootState) => state.language.lang
+  );
+
+  const parseDataForHeader = () => {
+    if (contacts.length) {
+      return {
+        //get info according current language
+        info: contacts[0][currentLanguage],
+        phone: contacts[0].phone,
+        email: contacts[0].email,
+      };
+    }
+    return null;
+  };
+
+  //data for header
+  const infoContacts = parseDataForHeader();
+
+  return (
+    <div className="InfoContact-wrapper">
+      <Grid container justify="space-between" wrap="nowrap">
+        <LangSwicher />
+        <Grid item>
+          <div style={{ textAlign: 'center' }}>{infoContacts?.info}</div>
+        </Grid>
+        <Login />
+      </Grid>
+      <Grid container justify="flex-start" wrap="nowrap">
+        <Grid item>
+          <Grid container>
+            <PhoneIcon />
+            <span>{infoContacts?.phone}</span>
+          </Grid>
+        </Grid>
+        <Grid item style={{ marginLeft: '0.5rem' }}>
+          <Grid container>
+            <EmailIcon />
+            <span>{infoContacts?.email}</span>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
+  );
 };
 
 export default InfoContacts;
