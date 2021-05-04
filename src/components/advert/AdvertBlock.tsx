@@ -1,12 +1,13 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import '../../styles/App.css';
-import img from './palanga-22.jpg';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+import '../../styles/App.css'
+import img from './palanga-22.jpg'
+import { ImageKit } from './ImageKit'
 
 const useStyles = makeStyles({
   root: {
@@ -15,10 +16,10 @@ const useStyles = makeStyles({
   media: {
     height: '100%',
   },
-});
+})
 
 export function MediaCard() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Card className={classes.root}>
@@ -42,7 +43,7 @@ export function MediaCard() {
         </CardContent>
       </CardActionArea>
     </Card>
-  );
+  )
 }
 
 const AdvertBlock = () => {
@@ -60,8 +61,9 @@ const AdvertBlock = () => {
       <div className="Advert-column">
         <MediaCard />
       </div>
+      <ImageKit />
     </div>
-  );
-};
+  )
+}
 
-export default AdvertBlock;
+export default AdvertBlock
