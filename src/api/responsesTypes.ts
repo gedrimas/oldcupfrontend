@@ -21,7 +21,7 @@ export interface Contacts {
   contacts: Contact[]
 }
 
-interface Advert {
+export interface Advert {
   allPhotos: string[]
   _id: string
   mainPhoto: string
@@ -36,3 +36,5 @@ export interface Adverts {
 }
 
 export type ResponsesTypes = Contacts | Sections | Adverts
+
+export type NullbleT<T> = { [K in keyof T]: T[K] | null }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -8,6 +9,8 @@ import Typography from '@material-ui/core/Typography'
 import '../../styles/App.css'
 import img from './palanga-22.jpg'
 import { ImageKit } from './ImageKit'
+import { MediaCard } from './AdvertCard'
+import { RootState } from '../../reduxAppStore/rootReducer'
 
 const useStyles = makeStyles({
   root: {
@@ -18,52 +21,33 @@ const useStyles = makeStyles({
   },
 })
 
-export function MediaCard() {
-  const classes = useStyles()
-
-  return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          className={classes.media}
-          image={img}
-          title="Contemplative Reptile"
-          height="140"
-          alt="Photo"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
-  )
-}
-
 const AdvertBlock = () => {
-  return (
-    <div className="AdvertBlock-wrapper">
-      <div className="Advert-column">
-        <MediaCard />
-      </div>
-      <div className="Advert-column">
-        <MediaCard />
-      </div>
-      <div className="Advert-column">
-        <MediaCard />
-      </div>
-      <div className="Advert-column">
-        <MediaCard />
-      </div>
-      <ImageKit />
-    </div>
+  const allAdverts = useSelector(
+    (state: RootState) => state.advertisements.allAdverts,
   )
+
+  const normalizeAdvertArry = () => {
+    let fake: unknown[] = []
+    if (allAdverts.length % 4 > 0) {
+      fake = [1, 2, 3].map((item) => (
+        <div key={item} className="Advert-column"></div>
+      ))
+    }
+    let cards = allAdverts.map((item, i, arr) => {
+      return (
+        <div className="Advert-column" key={item._id}>
+          <MediaCard photoUrl={item.mainPhoto} />
+        </div>
+      )
+    })
+
+    return [...cards, ...fake]
+  }
+
+  const t = normalizeAdvertArry()
+  console.log('t', t)
+
+  return <div className="AdvertBlock-wrapper">{normalizeAdvertArry()}</div>
 }
 
 export default AdvertBlock

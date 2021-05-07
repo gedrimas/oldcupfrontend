@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
-  customChip: (props: any) => ({
+  customChip: () => ({
     borderWidth: '3px',
-    borderColor: props.borderColor,
+    color: '#5d5d5f',
   }),
 })
 

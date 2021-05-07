@@ -1,25 +1,14 @@
 import React from 'react'
 import { IKContext, IKImage } from 'imagekitio-react'
 
-export const ImageKit = () => {
+export const ImageKit = (props) => {
+  console.log('props', props)
   const urlEndpoint = 'https://ik.imagekit.io/scqtro3md'
-
+  //"2BA02FFE-68FF-4AB5-9428-2D1ABD4C0C85_jjV1ak_v8.jpeg"
   return (
     <IKContext urlEndpoint={urlEndpoint}>
-      <h1>ImageKit React quick start</h1>
       <IKImage
-        path="default-image.jpg"
-        transformation={[
-          {
-            height: 200,
-            width: 200,
-          },
-        ]}
-      />
-
-      <h2>Loading image from an absolute path</h2>
-      <IKImage
-        path="07C4334B-0FAD-4350-93D4-383C57F82712_Q5YZKnOAO.jpeg"
+        path={props.photoUrl}
         transformation={[
           {
             height: 200,

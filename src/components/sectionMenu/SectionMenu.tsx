@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Chip from '@material-ui/core/Chip'
+import useStyles from '../../styles/materialCustomStyles'
 import '../../styles/App.css'
 import {
   fetchSections,
   setActiveSection,
 } from '../../reduxAppStore/reducers/sectionSlice'
 import { RootState } from '../../reduxAppStore/rootReducer'
+import { Advert, Adverts } from '../../api/responsesTypes'
+import Api from '../../api/api'
+import { setAllAdverts } from '../../reduxAppStore/reducers/advertsSlice'
 
 const SectionMenu: React.FC = () => {
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   //fetch data for sectionMenu component
   useEffect(() => {
@@ -39,10 +44,46 @@ const SectionMenu: React.FC = () => {
     return { borderWidth: '3px' }
   }
 
-  //chose section
+  //chose a section
   const choseSection = (sectionId: string) => {
     dispatch(setActiveSection(sectionId))
   }
+
+  //fetch adverts of first section for display them as a default
+  useEffect(() => {
+    if (!sections) return
+    const firstSectionId = sections[0]?._id
+
+    async function getAdvertsOfFirstSection() {
+      try {
+        const {
+          data: { allAdverts: adverts },
+        } = await new Api<Adverts>('get', `adverts/${firstSectionId}`).response
+        dispatch(setAllAdverts(adverts))
+      } catch (error) {
+        console.log('Err', error)
+      }
+    }
+    getAdvertsOfFirstSection()
+
+    //and highlight appropriate section
+    dispatch(setActiveSection(firstSectionId))
+  }, [sections])
+
+  //fetch adverts according to the chosen section and put them in Redux store
+  useEffect(() => {
+    async function getAdverts() {
+      try {
+        const {
+          data: { allAdverts: adverts },
+        } = await new Api<Adverts>('get', `adverts/${activeSection}`).response
+        dispatch(setAllAdverts(adverts))
+      } catch (error) {
+        console.log('Err', error)
+      }
+    }
+    getAdverts()
+  }, [activeSection])
 
   //make sections chip-buttons from sections array
   function sectionsComponents() {
@@ -53,6 +94,7 @@ const SectionMenu: React.FC = () => {
         key={item._id}
         variant="outlined"
         style={highLightSection(item._id)}
+        className={`${classes.customChip}`}
       />
     ))
   }
