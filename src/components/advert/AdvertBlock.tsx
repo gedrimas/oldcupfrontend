@@ -2,7 +2,8 @@ import { useSelector } from 'react-redux'
 import '../../styles/App.css'
 import { AdvertCard } from './AdvertCard'
 import { RootState } from '../../reduxAppStore/rootReducer'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, createRef } from 'react'
+import Grid from '@material-ui/core/Grid'
 
 const AdvertBlock = () => {
   const allAdverts = useSelector(
@@ -13,13 +14,14 @@ const AdvertBlock = () => {
     null,
   )
 
-  const ref = useRef<any>()
+  const ref = createRef<HTMLDivElement>()
+
   useEffect(() => {
     if (ref.current) {
       const containerWidth = ref.current.clientWidth
       setImgContainerWidth(containerWidth)
     }
-  }, [ref.current])
+  }, [ref])
 
   console.log('AdvertCard', imgContainerWidth)
 
@@ -34,7 +36,7 @@ const AdvertBlock = () => {
     }
     let cards = allAdverts.map((item) => {
       return (
-        <div className="Advert-column" key={item._id} ref={ref}>
+        <Grid className="Advert-column" key={item._id} ref={ref}>
           {imgContainerWidth && (
             <AdvertCard
               mainPhotoUrl={item.mainPhoto}
@@ -42,7 +44,7 @@ const AdvertBlock = () => {
               photoWidth={imgContainerWidth}
             />
           )}
-        </div>
+        </Grid>
       )
     })
     return [...cards, ...fake]

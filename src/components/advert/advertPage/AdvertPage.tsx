@@ -7,7 +7,7 @@ import { RootState } from '../../../reduxAppStore/rootReducer'
 import { ImageKit } from '../ImageKit'
 import useStyles from '../../../styles/materialCustomStyles'
 import Divider from '@material-ui/core/Divider'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, createRef } from 'react'
 
 const AdvertPage = () => {
   //get advertId from url
@@ -37,20 +37,22 @@ const AdvertPage = () => {
           {advert ? advert[currentLanguage] : null}
         </Grid>
 
-        <Grid container justify="flex-end">
-          <Divider orientation="vertical" flexItem />
-          <Grid item>
-            <Grid
-              container
-              wrap="nowrap"
-              justify="space-evenly"
-              alignItems="center"
-            >
-              <span className={`${classes.price}`}>
-                {' '}
-                {advert ? advert.price : null}{' '}
-              </span>
-              <EuroIcon fontSize="small" />
+        <Grid item xs={3}>
+          <Grid container justify="flex-end">
+            <Divider orientation="vertical" flexItem />
+            <Grid item>
+              <Grid
+                container
+                wrap="nowrap"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <span className={`${classes.price}`}>
+                  {' '}
+                  {advert ? advert.price : null}{' '}
+                </span>
+                <EuroIcon fontSize="small" />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -61,7 +63,9 @@ const AdvertPage = () => {
   const [imgContainerWidth, setImgContainerWidth] = useState<null | number>(
     null,
   )
-  const ref = useRef<any>()
+
+  const ref = createRef<HTMLDivElement>()
+
   useEffect(() => {
     if (ref.current) {
       const containerWidth = ref.current.clientWidth
