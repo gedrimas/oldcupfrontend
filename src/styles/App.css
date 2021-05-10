@@ -2,40 +2,20 @@ div {
   box-sizing: border-box;
 }
 
-/* img {
-  width: 100%;
-  height: auto;
-} */
-
 .App-wrapper {
   background-image: url(../icons/Pattern-Randomized.svg);
   background-size: 50rem;
   border: 1px solid white;
-  padding: 0 1rem;
-  min-height: 100vh;
-  position: relative;
   color: #5d5d5f;
-}
-
-header {
-  background: red;
-  z-index: 15;
-  position: fixed;
-}
-
-header span {
-  font-weight: 600;
+  margin: auto;
+  max-width: 1000px;
+  min-height: 100vh;
+  padding: 0 1rem;
 }
 
 .InfoContact-wrapper {
-  background-image: url(../icons/Pattern-Randomized.svg);
-  background-size: 50rem;
   padding: 0 1rem;
   height: 6rem;
-  position: fixed;
-  z-index: 10;
-  left: 0rem;
-  right: 0rem;
 }
 
 .InfoContact-wrapper:first-child {
@@ -43,11 +23,8 @@ header span {
 }
 
 .SectionMenu-wrapper {
-  background-image: url(../icons/Pattern-Randomized.svg);
-  background-size: 50rem;
   padding: 1rem;
   height: 3rem;
-  position: fixed;
   top: 6rem;
   z-index: 10;
   left: 0rem;
@@ -63,7 +40,6 @@ header span {
 }
 
 .AdvertBlock-wrapper {
-  margin-top: 9rem;
   min-height: 55vh;
   display: flex;
   flex-wrap: wrap;

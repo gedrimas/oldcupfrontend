@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Advert, Adverts, NullbleT } from '../../api/responsesTypes'
-
-type NullbleAdvert = NullbleT<Advert>
+import { Advert } from '../../api/responsesTypes'
 
 export interface SliceAdverts {
   allAdverts: Advert[]

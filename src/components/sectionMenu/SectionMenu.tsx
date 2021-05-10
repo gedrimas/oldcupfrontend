@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Chip from '@material-ui/core/Chip'
 import useStyles from '../../styles/materialCustomStyles'
@@ -8,7 +8,7 @@ import {
   setActiveSection,
 } from '../../reduxAppStore/reducers/sectionSlice'
 import { RootState } from '../../reduxAppStore/rootReducer'
-import { Advert, Adverts } from '../../api/responsesTypes'
+import { Adverts } from '../../api/responsesTypes'
 import Api from '../../api/api'
 import { setAllAdverts } from '../../reduxAppStore/reducers/advertsSlice'
 
@@ -68,7 +68,7 @@ const SectionMenu: React.FC = () => {
 
     //and highlight appropriate section
     dispatch(setActiveSection(firstSectionId))
-  }, [sections])
+  }, [sections, dispatch])
 
   //fetch adverts according to the chosen section and put them in Redux store
   useEffect(() => {
@@ -83,7 +83,7 @@ const SectionMenu: React.FC = () => {
       }
     }
     getAdverts()
-  }, [activeSection])
+  }, [activeSection, dispatch])
 
   //make sections chip-buttons from sections array
   function sectionsComponents() {
