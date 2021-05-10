@@ -8,6 +8,12 @@ import { RootState } from '../../reduxAppStore/rootReducer'
 import '../../styles/App.css'
 import Login from '../sharedComponents/Login'
 import LangSwicher from '../sharedComponents/LangSwicher'
+import Modal from '../sharedComponents/Modal'
+import {
+  openModal,
+  setModalContentType,
+} from '../../reduxAppStore/reducers/modalSlice'
+import LoginForm from '../sharedComponents/ModalForms/LoginForm'
 
 const InfoContacts: React.FC = () => {
   const dispatch = useDispatch()
@@ -38,14 +44,23 @@ const InfoContacts: React.FC = () => {
   //data for header
   const infoContacts = parseDataForHeader()
 
+  //get modal status
+  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen)
+
+  //open login modal and set content type for modal
+  function loginAsAdmin() {
+    dispatch(setModalContentType('loginForm'))
+    dispatch(openModal())
+  }
   return (
     <div className="InfoContact-wrapper">
+      <Modal open={isModalOpen} />
       <Grid container justify="space-between" wrap="nowrap">
         <LangSwicher />
         <Grid container alignItems="center" justify="center">
           <span style={{ textAlign: 'center' }}>{infoContacts?.info}</span>
         </Grid>
-        <Login />
+        <Login login={loginAsAdmin} />
       </Grid>
       <Grid container justify="center">
         <Grid item>

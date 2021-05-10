@@ -16,14 +16,13 @@ const AdvertBlock = () => {
 
   const ref = createRef<HTMLDivElement>()
 
+  //get widht for advert photo
   useEffect(() => {
     if (ref.current) {
       const containerWidth = ref.current.clientWidth
       setImgContainerWidth(containerWidth)
     }
   }, [ref])
-
-  console.log('AdvertCard', imgContainerWidth)
 
   //return adverts cards
   const normalizeAdvertArray = () => {

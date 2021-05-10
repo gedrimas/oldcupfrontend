@@ -3,7 +3,6 @@ import { IKContext, IKImage } from 'imagekitio-react'
 export const ImageKit = (props) => {
   const { photoUrl, width } = props
 
-  console.log('imagekit', width)
   const urlEndpoint = 'https://ik.imagekit.io/scqtro3md'
   return (
     <IKContext urlEndpoint={urlEndpoint}>
