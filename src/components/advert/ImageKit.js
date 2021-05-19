@@ -8,7 +8,7 @@ export const ImageKit = (props) => {
     <IKContext urlEndpoint={urlEndpoint}>
       <IKImage
         style={{
-          marginTop: '1rem',
+          marginTop: '10px',
           marginLeft: 'auto',
           marginRight: 'auto',
           display: 'block',

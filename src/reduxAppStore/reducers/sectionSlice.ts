@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../store'
 import { Sections } from '../../api/responsesTypes'
-import Api from '../../api/api'
-import parseApiError from '../../api/apiError'
+import Api, { apiRespType } from '../../api/api'
 import { setError } from './errorSlice'
 
 interface SlicseSrctions extends Sections {
@@ -38,11 +37,8 @@ const sectionSlice = createSlice({
     },
   },
 })
-export const {
-  setSections,
-  setPending,
-  setActiveSection,
-} = sectionSlice.actions
+export const { setSections, setPending, setActiveSection } =
+  sectionSlice.actions
 export default sectionSlice.reducer
 
 //fetch data and put into Redux store (into srctions)
@@ -52,23 +48,25 @@ export const fetchSections = (): AppThunk => async (dispatch) => {
     dispatch(setPending(true))
 
     //fetch data
+    const response = await new Api<Sections>('get', 'allsections').sendRequest()
+
+    //if response error
+    if (!apiRespType(response)) {
+      throw response
+    }
+
+    //get sections from response
     const {
       data: { allsections: sections },
-    } = await new Api<Sections>('get', 'allsections').response
+    } = response
 
     //put data into Redux store (sections)
     dispatch(setSections(sections))
-
-    //set up pending false
-    dispatch(setPending(false))
   } catch (error) {
+    //set Error info Redux store (error)
+    dispatch(setError(error))
+  } finally {
     //set up pending false
     dispatch(setPending(false))
-
-    //parse Error message
-    const errorInfo = parseApiError(error)
-
-    //set Error info Redux store (error)
-    dispatch(setError(errorInfo))
   }
 }

@@ -1,48 +1,64 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { ResponsesTypes } from './responsesTypes';
-import { Methods, Urls } from './paramsTypes';
+import axios, { AxiosRequestConfig } from 'axios'
+import { ResponsesTypes } from './responsesTypes'
+import { Methods, Urls } from './paramsTypes'
 
-type Response<U> = U extends ResponsesTypes ? U : never;
+type Response<U> = U extends ResponsesTypes ? U : never
 
 export interface AxiosResponse<U extends ResponsesTypes> {
-  data: Response<U>;
-  status: number;
-  statusText: string;
-  headers: any;
-  config: AxiosRequestConfig;
+  data: Response<U>
+  status: number
+  statusText: string
+  headers: any
+  config: AxiosRequestConfig
 }
 
-//Sends request and returns typed response in 'response' property
-export default class Api<U extends ResponsesTypes> {
-  public response: Promise<AxiosResponse<U>>;
+export interface ApiError {
+  message: string
+  endpoint: string
+  method: string
+}
 
+export function apiRespType<T extends ResponsesTypes>(
+  response: AxiosResponse<T> | ApiError,
+): response is AxiosResponse<T> {
+  return typeof (response as AxiosResponse<T>).data === 'object'
+}
+
+//Sends request and returns typed response in 'response' property or Error info
+export default class Api<U extends ResponsesTypes> {
   constructor(
     public method: Methods,
     public url: Urls,
     public payload?: any,
-    public options?: any
-  ) {
-    this.response = this.sentRequest();
-  }
+    public options?: any,
+  ) {}
 
-  private sentRequest() {
-    return (() => {
+  public sendRequest() {
+    return (async () => {
       switch (this.method) {
         case 'get': {
-          const response = axios[this.method]<Response<U>>(
-            `http://localhost:3001/${this.url}`
-          );
-          return response;
+          try {
+            const response = await axios[this.method]<Response<U>>(
+              `http://localhost:3001/${this.url}`,
+            )
+            return response
+          } catch (error) {
+            return {
+              message: error.message,
+              endpoint: this.url,
+              method: this.method,
+            }
+          }
         }
         case 'post': {
           const response = axios[this.method]<Response<U>>(
-            this.url,
+            `http://localhost:3001/${this.url}`,
             this.payload,
-            this.options
-          );
-          return response;
+            this.options,
+          )
+          return response
         }
       }
-    })();
+    })()
   }
 }

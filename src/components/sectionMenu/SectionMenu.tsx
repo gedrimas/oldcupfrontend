@@ -9,8 +9,13 @@ import {
 } from '../../reduxAppStore/reducers/sectionSlice'
 import { RootState } from '../../reduxAppStore/rootReducer'
 import { Adverts } from '../../api/responsesTypes'
-import Api from '../../api/api'
-import { setAllAdverts } from '../../reduxAppStore/reducers/advertsSlice'
+import Api, { apiRespType } from '../../api/api'
+import {
+  setAllAdverts,
+  setPending,
+} from '../../reduxAppStore/reducers/advertsSlice'
+import { GetSectionsError } from '../../api/apiError'
+import { setError } from '../../reduxAppStore/reducers/errorSlice'
 
 const SectionMenu: React.FC = () => {
   const dispatch = useDispatch()
@@ -56,12 +61,30 @@ const SectionMenu: React.FC = () => {
 
     async function getAdvertsOfFirstSection() {
       try {
+        dispatch(setPending(true))
+        //fetch data
+        const response = await new Api<Adverts>(
+          'get',
+          `adverts/${firstSectionId}`,
+        ).sendRequest()
+
+        //if response error
+        if (!apiRespType(response)) {
+          throw response
+        }
+
+        //get adverts fron response
         const {
           data: { allAdverts: adverts },
-        } = await new Api<Adverts>('get', `adverts/${firstSectionId}`).response
+        } = response
+
+        //put data into Redux store (adverts)
         dispatch(setAllAdverts(adverts))
       } catch (error) {
-        console.log('Err', error)
+        //set Error info Redux store (error)
+        dispatch(setError(error))
+      } finally {
+        dispatch(setPending(false))
       }
     }
     getAdvertsOfFirstSection()
@@ -74,12 +97,29 @@ const SectionMenu: React.FC = () => {
   useEffect(() => {
     async function getAdverts() {
       try {
+        //fetch data
+        const response = await new Api<Adverts>(
+          'get',
+          `adverts/${activeSection}`,
+        ).sendRequest()
+
+        //if response error
+        if (!apiRespType(response)) {
+          throw response
+        }
+
+        //get adverts from response
         const {
           data: { allAdverts: adverts },
-        } = await new Api<Adverts>('get', `adverts/${activeSection}`).response
+        } = response
+
+        //put adverts to Reux store
         dispatch(setAllAdverts(adverts))
       } catch (error) {
-        console.log('Err', error)
+        //set Error info Redux store (error)
+        dispatch(setError(error))
+      } finally {
+        dispatch(setPending(false))
       }
     }
     getAdverts()

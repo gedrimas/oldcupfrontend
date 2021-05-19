@@ -47,6 +47,7 @@ div {
 
 .Advert-column {
   flex: 100%;
+  margin: 10px 10px;
 }
 
 #langIcon:hover {
@@ -90,6 +91,6 @@ div {
 
 @media screen and (min-width: 1200px) {
   .Advert-column {
-    flex: 25%;
+    flex: 30%;
   }
 }

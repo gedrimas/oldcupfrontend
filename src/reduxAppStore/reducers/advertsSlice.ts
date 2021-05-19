@@ -3,10 +3,12 @@ import { Advert } from '../../api/responsesTypes'
 
 export interface SliceAdverts {
   allAdverts: Advert[]
+  pending: boolean
 }
 
 const initialState: SliceAdverts = {
   allAdverts: [],
+  pending: false,
 }
 
 /******************************************************************************
@@ -21,7 +23,11 @@ const advertsSlice = createSlice({
     setAllAdverts(state, action: PayloadAction<Advert[]>) {
       state.allAdverts = action.payload
     },
+    //pending status action
+    setPending(state, action: PayloadAction<boolean>) {
+      state.pending = action.payload
+    },
   },
 })
-export const { setAllAdverts } = advertsSlice.actions
+export const { setAllAdverts, setPending } = advertsSlice.actions
 export default advertsSlice.reducer

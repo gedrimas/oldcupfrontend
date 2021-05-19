@@ -16,7 +16,7 @@ const AdvertBlock = () => {
 
   const ref = createRef<HTMLDivElement>()
 
-  //get widht for advert photo
+  //get width for advert photo
   useEffect(() => {
     if (ref.current) {
       const containerWidth = ref.current.clientWidth
@@ -27,9 +27,9 @@ const AdvertBlock = () => {
   //return adverts cards
   const normalizeAdvertArray = () => {
     let fake: unknown[] = []
-    //make every row with not less then 4 columns by addin empty div
-    if (allAdverts.length % 4 > 0) {
-      fake = [1, 2, 3].map((item) => (
+    //make every row with not less then 3 columns by addin empty div
+    if (allAdverts.length % 3 > 0) {
+      fake = [1, 2].map((item) => (
         <div key={item} className="Advert-column"></div>
       ))
     }
@@ -40,7 +40,7 @@ const AdvertBlock = () => {
             <AdvertCard
               mainPhotoUrl={item.mainPhoto}
               advertId={item._id}
-              photoWidth={imgContainerWidth}
+              photoWidth={imgContainerWidth - 20}
             />
           )}
         </Grid>
