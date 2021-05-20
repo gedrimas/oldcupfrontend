@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Chip from '@material-ui/core/Chip'
 import useStyles from '../../styles/materialCustomStyles'
@@ -14,7 +14,6 @@ import {
   setAllAdverts,
   setPending,
 } from '../../reduxAppStore/reducers/advertsSlice'
-import { GetSectionsError } from '../../api/apiError'
 import { setError } from '../../reduxAppStore/reducers/errorSlice'
 
 const SectionMenu: React.FC = () => {
@@ -54,7 +53,7 @@ const SectionMenu: React.FC = () => {
     dispatch(setActiveSection(sectionId))
   }
 
-  //fetch adverts of first section for display them as a default
+  //fetch adverts of first section for display them as default
   useEffect(() => {
     if (!sections) return
     const firstSectionId = sections[0]?._id
@@ -93,6 +92,8 @@ const SectionMenu: React.FC = () => {
     dispatch(setActiveSection(firstSectionId))
   }, [sections, dispatch])
 
+  const ref = useRef(false)
+
   //fetch adverts according to the chosen section and put them in Redux store
   useEffect(() => {
     async function getAdverts() {
@@ -122,7 +123,13 @@ const SectionMenu: React.FC = () => {
         dispatch(setPending(false))
       }
     }
-    getAdverts()
+
+    //blok request after first render
+    if (ref.current) {
+      getAdverts()
+    } else {
+      ref.current = true
+    }
   }, [activeSection, dispatch])
 
   //make sections chip-buttons from sections array
