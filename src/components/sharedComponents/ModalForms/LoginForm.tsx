@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Grid from '@material-ui/core/Grid'
-import Api from '../../../api/api'
+import Api, { apiRespType } from '../../../api/api'
 import { closeModal } from '../../../reduxAppStore/reducers/modalSlice'
 
 interface FormFilds {
@@ -17,6 +17,7 @@ const LoginForm: React.FC = () => {
     name: '',
     password: '',
   })
+  const [loginError, setLoginError] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -28,12 +29,18 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault()
     try {
-      // const response = await (await new Api('post', 'login', namePass).response)
-      //   .status
-      //const t = response.blob()
-      //console.log('resp', response)
+      // send login request
+      const response = await new Api('post', 'login', namePass).sendRequest()
+
+      //if response error
+      if (!apiRespType(response)) {
+        throw response
+      }
+
       dispatch(closeModal())
-    } catch (err) {}
+    } catch (error) {
+      setLoginError(true)
+    }
   }
 
   return (
@@ -41,11 +48,13 @@ const LoginForm: React.FC = () => {
       <Grid container direction="column" alignItems="center">
         <h4>Stuff only</h4>
         <TextField
+          error={loginError}
           label="Login"
           value={namePass.name}
           onChange={(event) => handleChange({ name: event.target.value })}
         />
         <TextField
+          error={loginError}
           style={{ marginTop: '0.5rem' }}
           label="Password"
           type="password"
@@ -54,7 +63,7 @@ const LoginForm: React.FC = () => {
         />
         <ButtonGroup size="small" style={{ marginTop: '1rem' }}>
           <Button type="submit">Ok</Button>
-          <Button>Close</Button>
+          <Button onClick={() => dispatch(closeModal())}>Close</Button>
         </ButtonGroup>
       </Grid>
     </form>

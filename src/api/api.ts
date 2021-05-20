@@ -21,7 +21,7 @@ export interface ApiError {
 export function apiRespType<T extends ResponsesTypes>(
   response: AxiosResponse<T> | ApiError,
 ): response is AxiosResponse<T> {
-  return typeof (response as AxiosResponse<T>).data === 'object'
+  return (response as AxiosResponse<T>).status === 200
 }
 
 //Sends request and returns typed response in 'response' property or Error info
@@ -51,12 +51,21 @@ export default class Api<U extends ResponsesTypes> {
           }
         }
         case 'post': {
-          const response = axios[this.method]<Response<U>>(
-            `http://localhost:3001/${this.url}`,
-            this.payload,
-            this.options,
-          )
-          return response
+          try {
+            const response = await axios[this.method]<Response<U>>(
+              `http://localhost:3001/${this.url}`,
+              this.payload,
+              this.options,
+            )
+            return response
+          } catch (error) {
+            return {
+              message: error.message,
+              endpoint: this.url,
+              method: this.method,
+              body: this.payload,
+            }
+          }
         }
       }
     })()

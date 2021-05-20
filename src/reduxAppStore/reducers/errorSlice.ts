@@ -1,12 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface SliceError {
   errorInfo: {
-    message: string | null;
-    endpoint: string | null;
-    method: string | null;
-  };
-  isError: boolean;
+    message: string | null
+    endpoint: string | null
+    method: string | null
+    body?: object
+  }
+  isError: boolean
 }
 
 const initialState: SliceError = {
@@ -16,7 +17,7 @@ const initialState: SliceError = {
     method: null,
   },
   isError: false,
-};
+}
 
 /******************************************************************************
  *                      Redux store: error
@@ -28,8 +29,8 @@ const errorSlice = createSlice({
   reducers: {
     //set Error info
     setError(state, action: PayloadAction<SliceError['errorInfo']>) {
-      state.errorInfo = action.payload;
-      state.isError = true;
+      state.errorInfo = action.payload
+      state.isError = true
     },
     //drop Error
     clearError(state) {
@@ -37,11 +38,11 @@ const errorSlice = createSlice({
         message: null,
         endpoint: null,
         method: null,
-      };
-      state.isError = false;
+      }
+      state.isError = false
     },
   },
-});
-export type SetError = typeof setError;
-export const { setError, clearError } = errorSlice.actions;
-export default errorSlice.reducer;
+})
+export type SetError = typeof setError
+export const { setError, clearError } = errorSlice.actions
+export default errorSlice.reducer
