@@ -13,7 +13,7 @@ import {
   openModal,
   setModalContentType,
 } from '../../reduxAppStore/reducers/modalSlice'
-import LoginForm from '../sharedComponents/ModalForms/LoginForm'
+import EditIcon from '@material-ui/icons/Edit'
 
 const InfoContacts: React.FC = () => {
   const dispatch = useDispatch()
@@ -52,6 +52,13 @@ const InfoContacts: React.FC = () => {
     dispatch(setModalContentType('loginForm'))
     dispatch(openModal())
   }
+
+  //open contacts & info editing modal
+  function editContacts() {
+    dispatch(setModalContentType('contactsInfoForm'))
+    dispatch(openModal())
+  }
+
   return (
     <div className="InfoContact-wrapper">
       <Modal open={isModalOpen} />
@@ -73,6 +80,14 @@ const InfoContacts: React.FC = () => {
           <Grid container>
             <EmailIcon style={{ marginRight: '0.2rem' }} />
             <span>{infoContacts?.email}</span>
+            <EditIcon
+              style={{
+                marginLeft: '0.3rem',
+                color: 'ff4d76',
+                cursor: 'pointer',
+              }}
+              onClick={editContacts}
+            />
           </Grid>
         </Grid>
       </Grid>

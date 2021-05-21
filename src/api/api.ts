@@ -67,6 +67,23 @@ export default class Api<U extends ResponsesTypes> {
             }
           }
         }
+        case 'put': {
+          try {
+            const response = await axios[this.method]<Response<U>>(
+              `http://localhost:3001/${this.url}`,
+              this.payload,
+              this.options,
+            )
+            return response
+          } catch (error) {
+            return {
+              message: error.message,
+              endpoint: this.url,
+              method: this.method,
+              body: this.payload,
+            }
+          }
+        }
       }
     })()
   }

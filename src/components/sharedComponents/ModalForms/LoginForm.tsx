@@ -6,6 +6,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Grid from '@material-ui/core/Grid'
 import Api, { apiRespType } from '../../../api/api'
 import { closeModal } from '../../../reduxAppStore/reducers/modalSlice'
+import { setLogin } from '../../../reduxAppStore/reducers/loginSlice'
 
 interface FormFilds {
   name?: string
@@ -37,8 +38,13 @@ const LoginForm: React.FC = () => {
         throw response
       }
 
+      //set login true to view edition elements
+      dispatch(setLogin())
+
+      //close login moadl
       dispatch(closeModal())
     } catch (error) {
+      //highlight input fields as error
       setLoginError(true)
     }
   }
