@@ -17,6 +17,8 @@ import EditIcon from '@material-ui/icons/Edit'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import Api, { apiRespType } from '../../api/api'
 import { dropLogin } from '../../reduxAppStore/reducers/loginSlice'
+//import {materialCustomStyles} from '@styles/'
+import useStyles from '../../styles/materialCustomStyles'
 
 const InfoContacts: React.FC = () => {
   const dispatch = useDispatch()
@@ -83,6 +85,8 @@ const InfoContacts: React.FC = () => {
     }
   }
 
+  const classes = useStyles()
+
   return (
     <div className="InfoContact-wrapper">
       <Modal open={isModalOpen} />
@@ -114,11 +118,7 @@ const InfoContacts: React.FC = () => {
             <span>{infoContacts?.email}</span>
             {isLogin && (
               <EditIcon
-                style={{
-                  marginLeft: '0.3rem',
-                  color: 'ff4d76',
-                  cursor: 'pointer',
-                }}
+                className={`${classes.customIcon}`}
                 onClick={editContacts}
               />
             )}

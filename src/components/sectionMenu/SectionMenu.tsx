@@ -15,6 +15,7 @@ import {
   setPending,
 } from '../../reduxAppStore/reducers/advertsSlice'
 import { setError } from '../../reduxAppStore/reducers/errorSlice'
+import EditIcon from '@material-ui/icons/Edit'
 
 const SectionMenu: React.FC = () => {
   const dispatch = useDispatch()
@@ -132,6 +133,14 @@ const SectionMenu: React.FC = () => {
     }
   }, [activeSection, dispatch])
 
+  //delete section and all adverts under that section
+  const deleteSction = () => {
+    console.log(11111)
+  }
+
+  //chek isLogin
+  const isLogin = useSelector((state: RootState) => state.login.isLogin)
+
   //make sections chip-buttons from sections array
   function sectionsComponents() {
     return sections.map((item) => (
@@ -142,6 +151,8 @@ const SectionMenu: React.FC = () => {
         variant="outlined"
         style={highLightSection(item._id)}
         className={`${classes.customChip}`}
+        icon={isLogin ? <EditIcon fontSize="small" /> : undefined}
+        onDelete={isLogin ? deleteSction : undefined}
       />
     ))
   }
