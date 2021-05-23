@@ -45,7 +45,7 @@ const ContactsInfoForm: React.FC = () => {
       // send request to update contacts & info
       const response = await new Api(
         'put',
-        'contacts',
+        '/contacts',
         contactsInfo,
       ).sendRequest()
 

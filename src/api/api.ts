@@ -38,9 +38,7 @@ export default class Api<U extends ResponsesTypes> {
       switch (this.method) {
         case 'get': {
           try {
-            const response = await axios[this.method]<Response<U>>(
-              `http://localhost:3001/${this.url}`,
-            )
+            const response = await axios[this.method]<Response<U>>(this.url)
             return response
           } catch (error) {
             return {
@@ -53,7 +51,7 @@ export default class Api<U extends ResponsesTypes> {
         case 'post': {
           try {
             const response = await axios[this.method]<Response<U>>(
-              `http://localhost:3001/${this.url}`,
+              this.url,
               this.payload,
               this.options,
             )
@@ -70,7 +68,7 @@ export default class Api<U extends ResponsesTypes> {
         case 'put': {
           try {
             const response = await axios[this.method]<Response<U>>(
-              `http://localhost:3001/${this.url}`,
+              this.url,
               this.payload,
               this.options,
             )

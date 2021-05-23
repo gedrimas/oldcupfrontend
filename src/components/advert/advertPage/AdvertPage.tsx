@@ -60,11 +60,10 @@ const AdvertPage = () => {
     </Paper>
   )
 
-  const [imgContainerWidth, setImgContainerWidth] = useState<null | number>(
-    null,
-  )
+  const [imgContainerWidth, setImgContainerWidth] =
+    useState<null | number>(null)
 
-  const ref = createRef<HTMLDivElement>()
+  let ref = createRef<HTMLDivElement>()
 
   useEffect(() => {
     if (ref.current) {

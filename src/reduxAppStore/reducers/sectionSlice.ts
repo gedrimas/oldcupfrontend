@@ -48,7 +48,10 @@ export const fetchSections = (): AppThunk => async (dispatch) => {
     dispatch(setPending(true))
 
     //fetch data
-    const response = await new Api<Sections>('get', 'allsections').sendRequest()
+    const response = await new Api<Sections>(
+      'get',
+      '/allsections',
+    ).sendRequest()
 
     //if response error
     if (!apiRespType(response)) {

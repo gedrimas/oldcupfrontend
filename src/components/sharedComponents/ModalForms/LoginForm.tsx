@@ -30,8 +30,11 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault()
     try {
+      const token = sessionStorage.getItem('ExpressGeneratorTs')
+      console.log('token', token)
+
       // send login request
-      const response = await new Api('post', 'login', namePass).sendRequest()
+      const response = await new Api('post', '/login', namePass).sendRequest()
 
       //if response error
       if (!apiRespType(response)) {

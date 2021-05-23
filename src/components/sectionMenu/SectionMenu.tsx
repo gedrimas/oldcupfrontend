@@ -64,7 +64,7 @@ const SectionMenu: React.FC = () => {
         //fetch data
         const response = await new Api<Adverts>(
           'get',
-          `adverts/${firstSectionId}`,
+          `/adverts/${firstSectionId}`,
         ).sendRequest()
 
         //if response error

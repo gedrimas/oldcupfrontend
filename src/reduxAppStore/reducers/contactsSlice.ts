@@ -41,7 +41,7 @@ export const fetchContacts = (): AppThunk => async (dispatch) => {
     dispatch(setPending(true))
 
     //fetch data
-    const response = await new Api<Contacts>('get', 'contacts').sendRequest()
+    const response = await new Api<Contacts>('get', '/contacts').sendRequest()
 
     //if response error
     if (!apiRespType(response)) {
