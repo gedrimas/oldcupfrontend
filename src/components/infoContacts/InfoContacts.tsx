@@ -14,6 +14,9 @@ import {
   setModalContentType,
 } from '../../reduxAppStore/reducers/modalSlice'
 import EditIcon from '@material-ui/icons/Edit'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import Api, { apiRespType } from '../../api/api'
+import { dropLogin } from '../../reduxAppStore/reducers/loginSlice'
 
 const InfoContacts: React.FC = () => {
   const dispatch = useDispatch()
@@ -59,6 +62,27 @@ const InfoContacts: React.FC = () => {
     dispatch(openModal())
   }
 
+  //chek isLogin
+  const isLogin = useSelector((state: RootState) => state.login.isLogin)
+
+  //logout
+  const logOut = async () => {
+    try {
+      // send login request
+      const response = await new Api('get', '/logout').sendRequest()
+
+      //if response error
+      if (!apiRespType(response)) {
+        throw response
+      }
+
+      //set login false
+      dispatch(dropLogin())
+    } catch (error) {
+      //highlight input fields as error
+    }
+  }
+
   return (
     <div className="InfoContact-wrapper">
       <Modal open={isModalOpen} />
@@ -67,7 +91,15 @@ const InfoContacts: React.FC = () => {
         <Grid container alignItems="center" justify="center">
           <span style={{ textAlign: 'center' }}>{infoContacts?.info}</span>
         </Grid>
-        <Login login={loginAsAdmin} />
+        {isLogin ? (
+          <ExitToAppIcon
+            fontSize="large"
+            style={{ cursor: 'pointer' }}
+            onClick={logOut}
+          />
+        ) : (
+          <Login login={loginAsAdmin} />
+        )}
       </Grid>
       <Grid container justify="center">
         <Grid item>
@@ -80,14 +112,16 @@ const InfoContacts: React.FC = () => {
           <Grid container>
             <EmailIcon style={{ marginRight: '0.2rem' }} />
             <span>{infoContacts?.email}</span>
-            <EditIcon
-              style={{
-                marginLeft: '0.3rem',
-                color: 'ff4d76',
-                cursor: 'pointer',
-              }}
-              onClick={editContacts}
-            />
+            {isLogin && (
+              <EditIcon
+                style={{
+                  marginLeft: '0.3rem',
+                  color: 'ff4d76',
+                  cursor: 'pointer',
+                }}
+                onClick={editContacts}
+              />
+            )}
           </Grid>
         </Grid>
       </Grid>

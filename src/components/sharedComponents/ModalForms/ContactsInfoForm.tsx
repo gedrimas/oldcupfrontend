@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import Api, { apiRespType } from '../../../api/api'
 import { closeModal } from '../../../reduxAppStore/reducers/modalSlice'
 import { RootState } from '../../../reduxAppStore/rootReducer'
+import { fetchContacts } from '../../../reduxAppStore/reducers/contactsSlice'
 
 interface FormFilds {
   email?: string
@@ -56,6 +57,7 @@ const ContactsInfoForm: React.FC = () => {
 
       //close login moadl
       dispatch(closeModal())
+      dispatch(fetchContacts())
     } catch (error) {
       //highlight input fields as error
     }
