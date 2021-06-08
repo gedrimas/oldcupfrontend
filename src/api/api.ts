@@ -82,6 +82,18 @@ export default class Api<U extends ResponsesTypes> {
             }
           }
         }
+        case 'delete': {
+          try {
+            const response = await axios[this.method]<Response<U>>(this.url)
+            return response
+          } catch (error) {
+            return {
+              message: error.message,
+              endpoint: this.url,
+              method: this.method,
+            }
+          }
+        }
       }
     })()
   }

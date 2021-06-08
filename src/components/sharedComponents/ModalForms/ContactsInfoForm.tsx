@@ -40,7 +40,7 @@ const ContactsInfoForm: React.FC = () => {
     setContactsInfo({ ...contactsInfo, ...val })
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       // send request to update contacts & info

@@ -16,6 +16,12 @@ import {
 } from '../../reduxAppStore/reducers/advertsSlice'
 import { setError } from '../../reduxAppStore/reducers/errorSlice'
 import EditIcon from '@material-ui/icons/Edit'
+import Modal from '../sharedComponents/Modal'
+import {
+  openModal,
+  setModalContentType,
+  setModalProps,
+} from '../../reduxAppStore/reducers/modalSlice'
 
 const SectionMenu: React.FC = () => {
   const dispatch = useDispatch()
@@ -133,30 +139,50 @@ const SectionMenu: React.FC = () => {
     }
   }, [activeSection, dispatch])
 
-  //delete section and all adverts under that section
-  const deleteSction = () => {
-    console.log(11111)
-  }
-
   //chek isLogin
   const isLogin = useSelector((state: RootState) => state.login.isLogin)
 
+  //get modal status
+  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen)
+
+  //open modal to confirm sections deletion
+  function openConfirmDelSctionModal(_id: string) {
+    dispatch(
+      setModalProps({
+        sectionId: _id,
+        modalText:
+          'Are you sure to delete that section and all advertisements in it?',
+        endPoint: '/section',
+      }),
+    )
+    dispatch(setModalContentType('confirmDelForm'))
+    dispatch(openModal())
+  }
+
   //make sections chip-buttons from sections array
   function sectionsComponents() {
-    return sections.map((item) => (
-      <Chip
-        onClick={() => choseSection(item._id)}
-        label={item[currentLanguage]}
-        key={item._id}
-        variant="outlined"
-        style={highLightSection(item._id)}
-        className={`${classes.customChip}`}
-        icon={isLogin ? <EditIcon fontSize="small" /> : undefined}
-        onDelete={isLogin ? deleteSction : undefined}
-      />
-    ))
+    return sections.map((item) => {
+      const { _id } = item
+      return (
+        <Chip
+          onClick={() => choseSection(_id)}
+          label={item[currentLanguage]}
+          key={_id}
+          variant="outlined"
+          style={highLightSection(_id)}
+          className={`${classes.customChip}`}
+          icon={isLogin ? <EditIcon fontSize="small" /> : undefined}
+          onDelete={isLogin ? () => openConfirmDelSctionModal(_id) : undefined}
+        />
+      )
+    })
   }
-  return <div className="SectionMenu-wrapper">{sectionsComponents()}</div>
+  return (
+    <div className="SectionMenu-wrapper">
+      <Modal open={isModalOpen} />
+      {sectionsComponents()}
+    </div>
+  )
 }
 
 export default SectionMenu

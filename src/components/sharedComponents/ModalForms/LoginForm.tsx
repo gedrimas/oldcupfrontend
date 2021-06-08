@@ -27,7 +27,7 @@ const LoginForm: React.FC = () => {
     setNamePass({ ...namePass, ...val })
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       // send login request

@@ -4,11 +4,19 @@ import { ModalContentTypes } from '../../components/sharedComponents/ModalForms'
 export interface SliceLang {
   isOpen: boolean
   modalContentType: ModalContentTypes | null
+  modalProps: ModalProps | null
+}
+
+interface ModalProps {
+  modalText: string
+  endPoint: string
+  sectionId?: string
 }
 
 const initialState: SliceLang = {
   isOpen: false,
   modalContentType: null,
+  modalProps: null,
 }
 
 /******************************************************************************
@@ -33,7 +41,13 @@ const modalSlice = createSlice({
     setModalContentType(state, action: PayloadAction<ModalContentTypes>) {
       state.modalContentType = action.payload
     },
+
+    //set modal props if it necessary
+    setModalProps(state, action: PayloadAction<ModalProps>) {
+      state.modalProps = action.payload
+    },
   },
 })
-export const { openModal, closeModal, setModalContentType } = modalSlice.actions
+export const { openModal, closeModal, setModalContentType, setModalProps } =
+  modalSlice.actions
 export default modalSlice.reducer
