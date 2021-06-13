@@ -22,6 +22,7 @@ import {
   setModalContentType,
   setModalProps,
 } from '../../reduxAppStore/reducers/modalSlice'
+import CreateNewEntityButton from '../sharedComponents/createNewEntity'
 
 const SectionMenu: React.FC = () => {
   const dispatch = useDispatch()
@@ -161,7 +162,7 @@ const SectionMenu: React.FC = () => {
 
   //make sections chip-buttons from sections array
   function sectionsComponents() {
-    return sections.map((item) => {
+    const allSections = sections.map((item) => {
       const { _id } = item
       return (
         <Chip
@@ -176,6 +177,10 @@ const SectionMenu: React.FC = () => {
         />
       )
     })
+
+    if (isLogin)
+      allSections.unshift(<CreateNewEntityButton entityType="newSection" />)
+    return allSections
   }
   return (
     <div className="SectionMenu-wrapper">

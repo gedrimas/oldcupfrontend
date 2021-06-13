@@ -7,7 +7,7 @@ import { RootState } from '../../../reduxAppStore/rootReducer'
 import { ImageKit } from '../ImageKit'
 import useStyles from '../../../styles/materialCustomStyles'
 import Divider from '@material-ui/core/Divider'
-import { useRef, useEffect, useState, createRef } from 'react'
+import { useEffect, useState, createRef } from 'react'
 
 const AdvertPage = () => {
   //get advertId from url

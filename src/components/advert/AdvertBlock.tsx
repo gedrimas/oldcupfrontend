@@ -2,17 +2,20 @@ import { useSelector } from 'react-redux'
 import '../../styles/App.css'
 import { AdvertCard } from './AdvertCard'
 import { RootState } from '../../reduxAppStore/rootReducer'
-import { useEffect, useState, createRef } from 'react'
+import React, { useEffect, useState, createRef } from 'react'
 import Grid from '@material-ui/core/Grid'
+import CreateNewEntityButton from '../sharedComponents/createNewEntity'
+import useStyles from '../../styles/materialCustomStyles'
 
 const AdvertBlock = () => {
+  const classes = useStyles()
+
   const allAdverts = useSelector(
     (state: RootState) => state.advertisements.allAdverts,
   )
 
-  const [imgContainerWidth, setImgContainerWidth] = useState<null | number>(
-    null,
-  )
+  const [imgContainerWidth, setImgContainerWidth] =
+    useState<null | number>(null)
 
   const ref = createRef<HTMLDivElement>()
 
@@ -24,6 +27,9 @@ const AdvertBlock = () => {
     }
   }, [ref])
 
+  //chek isLogin
+  const isLogin = useSelector((state: RootState) => state.login.isLogin)
+
   //return adverts cards
   const normalizeAdvertArray = () => {
     let fake: unknown[] = []
@@ -33,19 +39,45 @@ const AdvertBlock = () => {
         <div key={item} className="Advert-column"></div>
       ))
     }
-    let cards = allAdverts.map((item) => {
+
+    //if logged in show button to add new advertising
+    const isCreateBatton = (i: number) => isLogin && i === 0
+
+    let cards = allAdverts.map((item, i) => {
+      const { _id, mainPhoto, price, ru, ee } = item
       return (
-        <Grid className="Advert-column" key={item._id} ref={ref}>
-          {imgContainerWidth && (
-            <AdvertCard
-              mainPhotoUrl={item.mainPhoto}
-              advertId={item._id}
-              photoWidth={imgContainerWidth - 20}
-            />
-          )}
-        </Grid>
+        <>
+          {isCreateBatton(i) && imgContainerWidth ? (
+            <Grid
+              className="Advert-column"
+              key={_id + 'create'}
+              ref={ref}
+              style={{
+                border: '1px solid #ff4d76',
+                color: '#ff4d76',
+                borderRadius: '4px',
+              }}
+            >
+              <CreateNewEntityButton
+                entityType="newAdvert"
+                dimention={imgContainerWidth - 10}
+              />
+            </Grid>
+          ) : null}
+          <Grid className="Advert-column" key={_id} ref={ref}>
+            {imgContainerWidth && (
+              <AdvertCard
+                mainPhotoUrl={mainPhoto}
+                advertId={_id}
+                photoWidth={imgContainerWidth - 20}
+                info={{ price, ru, ee }}
+              />
+            )}
+          </Grid>
+        </>
       )
     })
+
     return [...cards, ...fake]
   }
 
